@@ -13,5 +13,7 @@ urlpatterns = patterns('',
     # existing patterns here...
     (r'^accounts/login/$',  login),
     (r'^accounts/logout/$', logout),
+    url(r'^accounts/register$', 'canipee.views.register', name='register'),
+    url(r'^accounts/profile$', 'canipee.views.profile', name='profile'),
 
 )
