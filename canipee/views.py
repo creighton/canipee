@@ -19,6 +19,9 @@ def register(request):
     return render(request, "registration/register.html", 
         {'form': form})
 
+def home(request):
+    return render(request, "canipee/home.html")
+
 @login_required
 def profile(request):
     return render(request, "accounts/profile.html")

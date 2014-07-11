@@ -1,0 +1,44 @@
+{% extends "potty/base.html" %}
+
+{% block title %}Can I Pee?! Bathroom{% endblock %}
+
+{% block container %}
+<h1>Bathroom Form</h1>
+{% if form.non_field_errors %}
+<div class="alert alert-danger">{{ form.non_field_errors }}</div>
+{% endif %}
+<form role="form" method='POST'>
+	{% csrf_token %}
+
+	{% if form.name.errors %}
+	<div class="form-group has-error">
+	{% else %}
+	<div class="form-group">
+	{% endif %}
+	<label for="name">Name: </label>
+	<input type="text" class="form-control" name="name" id="name" placeholder="bathroom name">
+	{% if form.name.errors %}
+	<span class="help-block"><span class="text-danger">{{ form.name.errors }}</span></span>
+	{% endif %}
+	</div>
+	
+	{% if form.description.errors %}
+	<div class="form-group has-error">
+	{% else %}
+	<div class="form-group">
+	{% endif %}
+	<label for="name">Description: </label><textarea class="form-control" rows="3" name="description" id="description" placeholder="bathroom name"></textarea>
+	{% if form.description.errors %}
+	<span class="help-block"><span class="text-danger">{{ form.description.errors }}</span></span>
+	{% endif %}
+	</div>
+
+	<div class="form-group">
+	<input type="hidden" class="form-control" name="createdBy" id="createdBy" value="{{form.createdBy.value}}">
+	</div>
+
+	<div class="form-group">
+	<button type="submit" class="btn btn-default">Create</button> 
+	</div>
+</form>
+{% endblock %}

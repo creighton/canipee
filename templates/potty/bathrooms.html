@@ -1,0 +1,72 @@
+{% extends "potty/base.html" %}
+
+{% block title %}Can I Pee?! Bathrooms{% endblock %}
+
+{% block container %}
+    <h1>Bathrooms</h1>
+    {% if messages %}
+    	{% for message in messages %}
+    	{% if message.tags == 'success' %}
+    	<div class="alert alert-success" role="alert">{{message}}</div>
+    	{% elif message.tags == 'error' %}
+    	<div class="alert alert-danger" role="alert">{{message}}</div>
+    	{% else %}
+    	<div class="alert alert-info" role="alert">{{message}}</div>
+    	{% endif %}
+    	{% endfor %}
+    {% endif %}
+    {% if not user or not user.is_authenticated %}
+    <a href="{% url 'django.contrib.auth.views.login' %}">Log in</a>
+    <a href="{% url 'canipee.views.register' %}">Sign up</a>
+    {% endif %}
+    <table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Status</th>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Stalls</th>
+				<th>Created By</th>
+			</tr>
+		</thead>
+		<tbody>
+    	{% for br in bathrooms %}
+			<tr>
+				<td>
+					{% if br.is_occupied %}
+						{% if user and user.is_authenticated and br.who_is_bogging_you_down.id == user.id %}
+						<form id="unlockform{{br.id}}" method="POST" action="{% url 'unlock' br.id %}">
+							{% csrf_token %}
+							<input type="hidden" name="userid" value="{{user.id}}" />
+							<input type="hidden" name="redirect" value="{{request.path}}" />
+							<a href="javascript:$('#unlockform{{br.id}}').submit();"><span class="glyphicon glyphicon-ban-circle"></span></a>
+						</form>
+						{% else %}
+						<span class="glyphicon glyphicon-ban-circle"></span>
+						({{br.who_is_bogging_you_down}})
+						{% endif %}
+					{% else %}
+					{% if user and user.is_authenticated %}
+					<form id="lockform{{br.id}}" method="POST" action="{% url 'lock' br.id %}">
+						{% csrf_token %}
+						<input type="hidden" name="userid" value="{{user.id}}" />
+						<input type="hidden" name="redirect" value="{{request.path}}" />
+						<a href="javascript:$('#lockform{{br.id}}').submit();"><span class="glyphicon glyphicon-ok-circle"></span></a>
+					</form>
+					{% else %}
+					<span class="glyphicon glyphicon-ok-circle"></span>
+					{% endif %}
+					{% endif %}
+				</td>
+				<td><a href="{% url 'bathroom' br.id %}">{{ br.name }}</a></td>
+				<td>{{ br.description }}</td>
+				<td>{% if br.stalls %}{{ br.stalls }}{% else %}unknown{% endif %}</td>
+				<td>{{ br.createdBy.username }}</td>
+			</tr>	
+    	{% endfor %}
+		</tbody>
+	</table>
+	{% if user and user.is_authenticated %}
+	<a href="{% url 'create' %}">Create New Bathroom</a>
+	{% endif %}
+{% endblock %}

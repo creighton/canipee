@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-</head>
-<body>
-    <h1>Create an account</h1>
+{% extends "canipee/base.html" %}
+
+{% block title %}Create an account{% endblock %}
+
+{% block container %}
   <form action="" method="post">
     {% csrf_token %}
       {{ form.as_p }}
       <input type="submit" value="Create the account">
   </form>
-</body>
-</html>
+{% endblock %}

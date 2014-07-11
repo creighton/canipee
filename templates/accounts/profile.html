@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-</head>
-<body>
-    <h1>Profile for {{ user.username}}</h1>
+{% extends "canipee/base.html" %}
+
+{% block title %}Profile for {{ user.username}}{% endblock %}
+
+{% block container %}
+	<h1>Your Profile</h1>
   	{{ user.username }}
-</body>
-</html>
+{% endblock %}

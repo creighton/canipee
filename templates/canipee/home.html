@@ -1,0 +1,19 @@
+{% extends "canipee/base.html" %}
+
+{% block title %}Can I Pee?! Home{% endblock %}
+
+{% block container %}
+    <h1>Can you pee?</h1>
+    <p>
+    {% if user and user.is_authenticated %}
+    {{ user.username }}
+    <a href="{% url 'potty.views.bathrooms' %}">Check Bathrooms</a>
+    {% else %}
+    <a href="{% url 'django.contrib.auth.views.login' %}">Log in</a>
+    </p>
+    <p>or</p>
+    <p>
+    <a href="#">Sign up</a>
+    {% endif %}
+    </p>
+{% endblock %}
