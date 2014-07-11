@@ -3,9 +3,10 @@
 {% block title %}Create an account{% endblock %}
 
 {% block container %}
-  <form action="" method="post">
+	<h1>Sign Up</h1>
+  <form role="form" action="" method="post">
     {% csrf_token %}
       {{ form.as_p }}
-      <input type="submit" value="Create the account">
+      <button type="submit" value="Create the account">Create</button>
   </form>
 {% endblock %}
